@@ -1,4 +1,4 @@
-import { keybindings } from './keybindings.js';
+import { type KeyBindingOptions, keybindings } from './keybindings.js';
 import { shouldRejectKeystrokes } from './shouldRejectKeystrokes.js';
 /**
  * Reference: https://github.com/jamiebuilds/tinykeys/issues/37
@@ -38,11 +38,30 @@ export type Action = {
 export type UseTinykeysProps<T extends Action> = {
   actionTree: Record<string, T>;
   onActionSelect: (action: T) => void;
+  options?: KeyBindingOptions;
 };
 
 /**
  * `useTinykeys` registers and listens to keyboard strokes and
  * performs actions for patterns that match the user defined `shortcut`.
+ *
+ * @example
+ * ```tsx
+ * const bindingEvents = useTinykeys({
+ *  actionTree: {
+ *    search: {
+ *      id: 'search',
+ *      shortcut: ['$mod+k'],
+ *    },
+ *  },
+ *  onActionSelect: (action) => {
+ *    console.log(action);
+ *  },
+ *  options: {
+ *    timeout: 400,
+ *  },
+ * });
+ * ```
  */
 export function useTinykeys<T extends Action>(props: UseTinykeysProps<T>) {
   const { actionTree, onActionSelect } = props;
@@ -73,6 +92,7 @@ export function useTinykeys<T extends Action>(props: UseTinykeysProps<T>) {
 
   return () =>
     keybindings(window, shortcutsMap, {
-      timeout: 400,
+      ...props.options,
+      timeout: props.options?.timeout ?? 400,
     });
 }
