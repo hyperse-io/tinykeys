@@ -1,6 +1,6 @@
 {
   "name": "@hyperse/tinykeys",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This library registers and listens to keyboard input, executing actions when the keystrokes match a user-defined shortcut.",
   "keywords": [
     "hyperse",
